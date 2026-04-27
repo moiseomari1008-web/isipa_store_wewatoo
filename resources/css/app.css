@@ -10,6 +10,7 @@
 
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-display: 'Epunda Slab', 'Georgia', 'Times New Roman', serif;
 
     --color-zinc-50: #fafafa;
     --color-zinc-100: #f5f5f5;
@@ -26,6 +27,15 @@
     --color-accent: var(--color-neutral-800);
     --color-accent-content: var(--color-neutral-800);
     --color-accent-foreground: var(--color-white);
+
+    --store-primary: #2613D8;
+    --store-text: #F9F909;
+    --store-secondary: #E0DADA;
+    --store-border: #FFFFFF;
+    --store-accent: #8ce0ff;
+    --store-deep: #07031d;
+    --store-panel: rgba(255, 255, 255, 0.08);
+    --store-panel-strong: rgba(255, 255, 255, 0.12);
 }
 
 @layer theme {
@@ -61,6 +71,242 @@ select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
 
-/* \[:where(&)\]:size-4 {
-    @apply size-4;
-} */
+@layer components {
+    .visitor-shell {
+        background:
+            radial-gradient(circle at top left, rgba(249, 249, 9, 0.16), transparent 28%),
+            radial-gradient(circle at 80% 20%, rgba(140, 224, 255, 0.18), transparent 22%),
+            linear-gradient(135deg, #04010f 0%, #12083d 42%, #2613D8 100%);
+        min-height: 100vh;
+    }
+
+    .visitor-bg {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        background-image:
+            linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        background-size: 120px 120px;
+        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 90%);
+        pointer-events: none;
+    }
+
+    .visitor-header {
+        @apply sticky top-0 z-20 border-b border-white/10 bg-[rgba(4,1,15,0.72)] backdrop-blur-xl;
+    }
+
+    .visitor-brand-mark {
+        @apply flex h-14 w-14 items-center justify-center rounded-[1.35rem] border border-white/20 bg-[var(--store-text)] text-base font-black text-[var(--store-primary)] shadow-[0_20px_60px_rgba(249,249,9,0.35)];
+        font-family: var(--font-display);
+    }
+
+    .visitor-brand-title,
+    .visitor-kicker,
+    .visitor-section-title,
+    .visitor-card-title,
+    .visitor-empty-title,
+    .visitor-footer-title,
+    .visitor-display-title,
+    .visitor-detail-value,
+    .visitor-detail-text,
+    .visitor-hero-title {
+        font-family: var(--font-display);
+    }
+
+    .visitor-brand-title {
+        @apply text-lg text-white;
+    }
+
+    .visitor-nav-link {
+        @apply relative z-30 rounded-full border border-transparent px-4 py-2 text-sm font-semibold text-white/78 transition hover:border-white/20 hover:bg-white/8 hover:text-white;
+    }
+
+    .visitor-nav-link.is-active {
+        @apply border-white/20 bg-white/10 text-[var(--store-text)];
+    }
+
+    .visitor-button {
+        @apply relative z-30 inline-flex items-center gap-2 rounded-full border border-[var(--store-text)] px-6 py-3 text-sm font-bold uppercase tracking-[0.18em] text-[var(--store-primary)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_40px_rgba(249,249,9,0.3)];
+        background: linear-gradient(135deg, var(--store-text) 0%, #fff36c 100%);
+    }
+
+    .mobile-auth-link,
+    .mobile-auth-button {
+        @apply w-full justify-center;
+    }
+
+    .visitor-button-sm {
+        @apply px-5 py-2.5 text-xs;
+    }
+
+    .visitor-button-ghost {
+        @apply text-white hover:text-[var(--store-primary)];
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.22);
+    }
+
+    .visitor-chip {
+        @apply inline-flex items-center rounded-full border border-white/16 bg-white/7 px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-white/78;
+    }
+
+    .visitor-kicker {
+        @apply text-xs uppercase tracking-[0.45em] text-[var(--store-text)];
+    }
+
+    .visitor-hero-title {
+        @apply max-w-4xl text-5xl leading-[0.95] text-white md:text-6xl xl:text-7xl;
+    }
+
+    .visitor-hero-title span {
+        @apply text-[var(--store-text)];
+    }
+
+    .visitor-stat-card,
+    .visitor-display-card,
+    .visitor-display-banner,
+    .visitor-category-card,
+    .visitor-product-card,
+    .visitor-empty-state,
+    .visitor-panel,
+    .visitor-detail-card {
+        @apply rounded-[1.75rem] border border-white/12 backdrop-blur-sm;
+        background: linear-gradient(180deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.05) 100%);
+        box-shadow: 0 20px 80px rgba(7, 3, 29, 0.35);
+    }
+
+    .visitor-stat-card {
+        @apply flex flex-col gap-3 p-5;
+    }
+
+    .visitor-stat-value {
+        @apply text-3xl font-black text-[var(--store-text)];
+        font-family: var(--font-display);
+    }
+
+    .visitor-stat-label {
+        @apply text-sm leading-6 text-white/72;
+    }
+
+    .visitor-display-panel {
+        @apply relative overflow-hidden rounded-[2rem] border border-white/14 p-1;
+        background: linear-gradient(145deg, rgba(249,249,9,0.18), rgba(38,19,216,0.25), rgba(255,255,255,0.08));
+    }
+
+    .visitor-display-grid {
+        @apply grid gap-4 rounded-[1.75rem] bg-[rgba(6,2,20,0.82)] p-5 md:grid-cols-2;
+    }
+
+    .visitor-display-card,
+    .visitor-display-card-alt {
+        @apply min-h-44 p-6;
+    }
+
+    .visitor-display-card-alt {
+        background: linear-gradient(180deg, rgba(38,19,216,0.55) 0%, rgba(255,255,255,0.08) 100%);
+    }
+
+    .visitor-display-label,
+    .visitor-card-kicker,
+    .visitor-footer-label,
+    .visitor-form-label {
+        @apply text-xs font-semibold uppercase tracking-[0.35em] text-white/60;
+    }
+
+    .visitor-display-title {
+        @apply mt-5 text-2xl leading-tight text-white;
+    }
+
+    .visitor-display-banner {
+        @apply p-6 md:col-span-2;
+    }
+
+    .visitor-color-swatch {
+        @apply h-10 w-10 rounded-full shadow-lg;
+    }
+
+    .visitor-section-title {
+        @apply text-3xl text-white md:text-4xl;
+    }
+
+    .visitor-category-card,
+    .visitor-product-card {
+        @apply flex h-full flex-col gap-5 p-6 transition duration-300 hover:-translate-y-1.5 hover:border-white/22;
+    }
+
+    .visitor-card-title {
+        @apply mt-3 text-2xl text-white;
+    }
+
+    .visitor-card-footer {
+        @apply mt-auto flex items-center justify-between gap-4 text-sm text-white/65;
+    }
+
+    .visitor-product-visual,
+    .visitor-detail-visual {
+        @apply relative flex items-end overflow-hidden rounded-[1.35rem] border border-white/12;
+        background:
+            radial-gradient(circle at 20% 20%, rgba(249,249,9,0.25), transparent 32%),
+            linear-gradient(145deg, rgba(38,19,216,0.95), rgba(11,7,44,0.9));
+    }
+
+    .visitor-product-visual {
+        @apply h-44 p-5;
+    }
+
+    .visitor-detail-visual {
+        @apply min-h-[420px] p-8;
+    }
+
+    .visitor-product-visual span,
+    .visitor-detail-visual span {
+        @apply rounded-full border border-white/16 bg-black/20 px-4 py-2 text-xs uppercase tracking-[0.35em] text-[var(--store-text)];
+    }
+
+    .visitor-price-tag {
+        @apply rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-black text-[var(--store-text)];
+        font-family: var(--font-display);
+    }
+
+    .visitor-empty-state {
+        @apply p-8 text-center;
+    }
+
+    .visitor-empty-text {
+        @apply mx-auto mt-4 max-w-2xl text-sm leading-7 text-white/70;
+    }
+
+    .visitor-panel {
+        @apply p-5 lg:p-6;
+    }
+
+    .visitor-input {
+        @apply w-full rounded-[1rem] border border-white/15 bg-[rgba(255,255,255,0.05)] px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/40 focus:border-[var(--store-text)] focus:ring-2 focus:ring-[rgba(249,249,9,0.35)];
+    }
+
+    .visitor-pagination nav {
+        @apply flex flex-wrap items-center justify-center gap-2;
+    }
+
+    .visitor-pagination span,
+    .visitor-pagination a {
+        @apply rounded-full border border-white/12 px-4 py-2 text-sm text-white/75;
+    }
+
+    .visitor-pagination .bg-white {
+        @apply border-[var(--store-text)] text-[var(--store-primary)];
+        background: var(--store-text) !important;
+    }
+
+    .visitor-detail-card {
+        @apply p-5;
+    }
+
+    .visitor-detail-value {
+        @apply mt-3 text-3xl text-[var(--store-text)];
+    }
+
+    .visitor-detail-text {
+        @apply mt-3 text-2xl text-white;
+    }
+}

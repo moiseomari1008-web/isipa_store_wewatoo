@@ -36,10 +36,19 @@ new #[Layout('components.layouts.auth')] class extends Component {
             ]);
         }
 
+        $user = Auth::user();
+        if ($user->isAdmin()) {
+            Auth::logout();
+            RateLimiter::hit($this->throttleKey());
+            throw ValidationException::withMessages([
+                'email' => "Ce compte est un compte administrateur. Veuillez vous connecter via l'espace Admin sécurisé.",
+            ]);
+        }
+
         RateLimiter::clear($this->throttleKey());
         Session::regenerate();
 
-        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+        $this->redirectIntended(default: route('client.boutique', absolute: false), navigate: true);
     }
 
     /**

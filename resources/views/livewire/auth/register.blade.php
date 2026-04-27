@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Panier;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +13,8 @@ use Livewire\Volt\Component;
 new #[Layout('components.layouts.auth')] class extends Component {
     public string $name = '';
     public string $email = '';
+    public string $telephone = '';
+    public string $adresse = '';
     public string $password = '';
     public string $password_confirmation = '';
 
@@ -22,16 +26,34 @@ new #[Layout('components.layouts.auth')] class extends Component {
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'telephone' => ['nullable', 'string', 'max:30'],
+            'adresse' => ['nullable', 'string', 'max:500'],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $validated['password'] = Hash::make($validated['password']);
+        $roleClient = Role::firstOrCreate(
+            ['nom' => 'Client'],
+            ['description' => 'Role attribue automatiquement aux clients de la boutique.']
+        );
 
-        event(new Registered(($user = User::create($validated))));
+        $user = User::create([
+            'nom_complet' => $validated['name'],
+            'email' => $validated['email'],
+            'mot_de_passe' => Hash::make($validated['password']),
+            'telephone' => $validated['telephone'] ?: null,
+            'adresse' => $validated['adresse'] ?: null,
+            'id_role' => $roleClient->id,
+        ]);
+
+        Panier::firstOrCreate([
+            'id_utilisateur' => $user->id,
+        ]);
+
+        event(new Registered($user));
 
         Auth::login($user);
 
-        $this->redirect(route('dashboard', absolute: false), navigate: true);
+        $this->redirect(route('client.boutique', absolute: false), navigate: true);
     }
 }; ?>
 
@@ -50,6 +72,14 @@ new #[Layout('components.layouts.auth')] class extends Component {
         <!-- Email Address -->
         <div class="grid gap-2">
             <flux:input wire:model="email" id="email" label="{{ __('Email address') }}" type="email" name="email" required autocomplete="email" placeholder="email@example.com" />
+        </div>
+
+        <div class="grid gap-2">
+            <flux:input wire:model="telephone" id="telephone" label="{{ __('Telephone') }}" type="text" name="telephone" autocomplete="tel" placeholder="+243..." />
+        </div>
+
+        <div class="grid gap-2">
+            <flux:textarea wire:model="adresse" id="adresse" label="{{ __('Adresse') }}" name="adresse" rows="3" placeholder="Votre adresse complete"></flux:textarea>
         </div>
 
         <!-- Password -->

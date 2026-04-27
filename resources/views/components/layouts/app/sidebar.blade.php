@@ -7,27 +7,23 @@
         <flux:sidebar sticky stashable class="border-r border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
-            <a href="{{ route('dashboard') }}" class="mr-5 flex items-center space-x-2" wire:navigate>
+            <a href="{{ route('client.boutique') }}" class="mr-5 flex items-center space-x-2" wire:navigate>
                 <x-app-logo class="size-8" href="#"></x-app-logo>
             </a>
 
             <flux:navlist variant="outline">
-                <flux:navlist.group heading="Platform" class="grid">
-                    <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>Dashboard</flux:navlist.item>
+                <flux:navlist.group heading="Client" class="grid">
+                    <flux:navlist.item icon="shopping-bag" :href="route('client.boutique')" :current="request()->routeIs('client.boutique')" wire:navigate>Boutique</flux:navlist.item>
+                    <flux:navlist.item icon="shopping-cart" :href="route('panier.index')" :current="request()->routeIs('panier.*')" wire:navigate>Panier</flux:navlist.item>
+                    <flux:navlist.item icon="clipboard-document-list" :href="route('client.commandes.index')" :current="request()->routeIs('client.commandes.*')" wire:navigate>Commandes</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 
             <flux:spacer />
 
-            <flux:navlist variant="outline">
-                <flux:navlist.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
-                    Repository
-                </flux:navlist.item>
-
-                <flux:navlist.item icon="book-open-text" href="https://laravel.com/docs/starter-kits" target="_blank">
-                    Documentation
-                </flux:navlist.item>
-            </flux:navlist>
+            <a href="{{ route('home') }}" class="rounded-2xl border border-zinc-200 px-4 py-3 text-sm font-semibold text-zinc-700 dark:border-zinc-700 dark:text-zinc-200">
+                Retour a la vitrine
+            </a>
 
             <!-- Desktop User Menu -->
             <flux:dropdown position="bottom" align="start">
@@ -55,12 +51,6 @@
                                 </div>
                             </div>
                         </div>
-                    </flux:menu.radio.group>
-
-                    <flux:menu.separator />
-
-                    <flux:menu.radio.group>
-                        <flux:menu.item href="/settings/profile" icon="cog" wire:navigate>Settings</flux:menu.item>
                     </flux:menu.radio.group>
 
                     <flux:menu.separator />
@@ -105,12 +95,6 @@
                                 </div>
                             </div>
                         </div>
-                    </flux:menu.radio.group>
-
-                    <flux:menu.separator />
-
-                    <flux:menu.radio.group>
-                        <flux:menu.item href="/settings/profile" icon="cog" wire:navigate>Settings</flux:menu.item>
                     </flux:menu.radio.group>
 
                     <flux:menu.separator />
